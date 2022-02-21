@@ -1,6 +1,6 @@
 package pages;
 
-import propertiesConstants.PropertiesReader;
+import propertiesConstants                                                                                                                                                                                                                                                                                  .PropertiesReader;
 import waits.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +16,10 @@ public class YandexMailPage extends PageFactory {
     PropertiesReader propertiesReader = new PropertiesReader(); //Вызыв проперти
     private WebDriver driver;                                   // Инициализация локальной переменной драйвера
     private Integer quantityShipment;                           // Переменная хранит колличество входящих
+    String addresseeButtonConst = "//div[contains(@class, \"tst-field-to\")]/descendant::div[@class=\"composeYabbles\"]";
+    String backToMailButtonConst = "//*[@class=\"ComposeDoneScreen-Actions\"]";
+    String messageButtonLocator = "//a[@class=\"mail-ComposeButton js-main-action-compose\"]";
+    String mailsLocator = "//span[@title=\"Simbirsoft theme\"]";
     @FindBy(xpath = "//a[@class=\"mail-ComposeButton js-main-action-compose\"]")
     private WebElement messageButton;
     @FindBy(xpath = "//div[contains(@class, \"tst-field-to\")]/descendant::div[@class=\"composeYabbles\"]")
@@ -48,8 +52,8 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public Integer getNumberEmailsBefore() throws Exception {
-        if (waiting.newMail(propertiesReader.getProperies("mailsLocator"), driver).isDisplayed()) { // проверяю что загрузились письма
-            quantityShipment = driver.findElements(By.xpath(propertiesReader.getProperies("mailsLocator"))).size(); // считаю количество писем
+        if (waiting.newMail(mailsLocator, driver).isDisplayed()) { // проверяю что загрузились письма
+            quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считаю количество писем
             return quantityShipment; // возвращает количество писем
         }
         return null;
@@ -61,7 +65,7 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public void openMessageForme() throws Exception {
-        if (waiting.newMail(propertiesReader.getProperies("messageButtonLocator"), driver).isDisplayed()) { // проверка на наличие
+        if (waiting.newMail(messageButtonLocator, driver).isDisplayed()) { // проверка на наличие
             messageButton.click();// клик
         }
     }
@@ -72,7 +76,7 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public void writeMessage() throws Exception {
-        if (waiting.newMail(propertiesReader.getProperies("addresseeButton"), driver).isDisplayed()) { // проверка на наличие поля
+        if (waiting.newMail(addresseeButtonConst, driver).isDisplayed()) { // проверка на наличие поля
             addresseeButton.sendKeys(propertiesReader.getProperies("emailLogin")); // ввод почты куда отправить
             themeMail.click();
             themeMail.sendKeys(propertiesReader.getProperies("simbirsoftTheme")); // ввод темы письма
@@ -96,7 +100,7 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public void backToMail() throws Exception {
-        if (waiting.newMail(propertiesReader.getProperies("backToMailButton"), driver).isDisplayed()) {
+        if (waiting.newMail(backToMailButtonConst, driver).isDisplayed()) {
             backToMailButton.click();
         }
     }
@@ -119,7 +123,7 @@ public class YandexMailPage extends PageFactory {
     public Integer getNumberEmailsAfter() throws Exception {
         String xPathNewMail = "//*[text() = \"Найдено " + quantityShipment + " писем\\ьма\"]"; // составляет xPath
         if (waiting.newMail(xPathNewMail, driver).isDisplayed()) { // проверяет наличие нового письма
-            return quantityShipment = driver.findElements(By.xpath(propertiesReader.getProperies("mailsLocator"))).size(); // считает общее число писем
+            return quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считает общее число писем
         }
         return null;
     }

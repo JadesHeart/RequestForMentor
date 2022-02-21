@@ -23,9 +23,7 @@ public class Waiting {
      * @return Возвращает найденный элемент, если он появился на странице
      */
     public WebElement newMail(String locator, WebDriver driver) {
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
     }
 

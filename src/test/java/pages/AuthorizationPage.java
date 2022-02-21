@@ -15,6 +15,7 @@ public class AuthorizationPage extends PageFactory {
     private WebDriver driver;
     PropertiesReader propertiesReader = new PropertiesReader();
     Waiting waiting = new Waiting();
+    String passwordLocator = "//*[@id=\"passp-field-passwd\"]";
     @FindBy(xpath = "//a[contains(@class,\"Enter with-shadow\")]")
     private WebElement buttonLogs;
     @FindBy(xpath = "//*[@id=\"passp-field-login\"]")
@@ -39,7 +40,7 @@ public class AuthorizationPage extends PageFactory {
         buttonLogs.click();
         inputLogin.sendKeys(propertiesReader.getProperies("emailLogin"));
         inputLogin.sendKeys(Keys.ENTER);
-        if (waiting.newMail(propertiesReader.getProperies("passwordLocator"), driver).isDisplayed()) {
+        if (waiting.newMail(passwordLocator, driver).isDisplayed()) {
             inputPassword.sendKeys(propertiesReader.getProperies("emailPassword"));
             inputPassword.sendKeys(Keys.ENTER);
         }
