@@ -22,6 +22,7 @@ public class EmailTest {
 
     /**
      * Расширяю экран и перехожу в mail.yandex.ru
+     *
      * @throws Exception
      */
     @BeforeTest
@@ -42,21 +43,22 @@ public class EmailTest {
      * 9) Нахожу раздницу до отправления и после
      * 10) Преобразую раздницу из инт в строку
      * 11) Проверяю Ассёртом что число писем увеличилось на 1
+     *
      * @throws Exception
      */
     @Test
     public void checkNumberEmails() throws Exception {
         authorizationPage.authorization();
-        Integer numbersBefore = yandexMailPage.getNumberEmailsBefore();
+        int numbersBefore = yandexMailPage.getNumberEmailsBefore();
         yandexMailPage.openMessageForme();
         yandexMailPage.writeMessage();
         yandexMailPage.sendMessage();
-        yandexMailPage.backToMail();
+        yandexMailPage.buttonClickToBackToMail();
         yandexMailPage.reloadPage();
-        Integer numbersAfter = yandexMailPage.getNumberEmailsAfter();
-        Integer differenceNumberEmails = numbersAfter - numbersBefore;
-        String i = Integer.toString(differenceNumberEmails);
-        Assert.assertEquals(i, "1", "Раздница между входящеми до отправки не равна 1");
+        int numbersAfter = yandexMailPage.getNumberEmailsAfter();
+        int differenceNumberEmails = numbersAfter - numbersBefore;
+        System.out.println(differenceNumberEmails);
+        Assert.assertEquals(differenceNumberEmails, 1, "Входящие не увеличились. Раздница между до отправки/после не равна 1");
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.Properties;
  */
 public class PropertiesReader {
 
-    public String getProperies(String propertiKey) throws IOException {
+    public static String getProperies(String propertiKey) throws IOException {
         FileReader reader = new FileReader("src/test/java/constant.properties"); // путь к файлу с пропертями
         Properties properties = new Properties(); // создаёт новый проперти
         properties.load(reader); // соединяет его с файлом

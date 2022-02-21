@@ -1,6 +1,5 @@
 package pages;
 
-import propertiesConstants                                                                                                                                                                                                                                                                                  .PropertiesReader;
 import waits.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,12 +7,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import static propertiesConstants.PropertiesReader.getProperies;
+import static waits.Waiting.newMail;
+
 /**
  * Пэйджа для страницы со входящими письмами.
  */
 public class YandexMailPage extends PageFactory {
-    Waiting waiting = new Waiting();                            // Вызов класса с ожиданием
-    PropertiesReader propertiesReader = new PropertiesReader(); //Вызыв проперти
     private WebDriver driver;                                   // Инициализация локальной переменной драйвера
     private Integer quantityShipment;                           // Переменная хранит колличество входящих
     String addresseeButtonConst = "//div[contains(@class, \"tst-field-to\")]/descendant::div[@class=\"composeYabbles\"]";
@@ -52,11 +52,9 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public Integer getNumberEmailsBefore() throws Exception {
-        if (waiting.newMail(mailsLocator, driver).isDisplayed()) { // проверяю что загрузились письма
-            quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считаю количество писем
-            return quantityShipment; // возвращает количество писем
-        }
-        return null;
+        newMail(mailsLocator, driver).isDisplayed(); // проверяю что загрузились письма
+        quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считаю количество писем
+        return quantityShipment; // возвращает количество писем
     }
 
     /**
@@ -65,9 +63,8 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public void openMessageForme() throws Exception {
-        if (waiting.newMail(messageButtonLocator, driver).isDisplayed()) { // проверка на наличие
-            messageButton.click();// клик
-        }
+        newMail(messageButtonLocator, driver).isDisplayed(); // проверка на наличие
+        messageButton.click();// клик
     }
 
     /**
@@ -76,13 +73,12 @@ public class YandexMailPage extends PageFactory {
      * @throws Exception
      */
     public void writeMessage() throws Exception {
-        if (waiting.newMail(addresseeButtonConst, driver).isDisplayed()) { // проверка на наличие поля
-            addresseeButton.sendKeys(propertiesReader.getProperies("emailLogin")); // ввод почты куда отправить
-            themeMail.click();
-            themeMail.sendKeys(propertiesReader.getProperies("simbirsoftTheme")); // ввод темы письма
-            textMessageButton.click();
-            textMessageButton.sendKeys("Найдено " + quantityShipment + " писем\\ьма"); // текст письма. переменная - число входящих писем с темой "Simbirsoft theme"
-        }
+        newMail(addresseeButtonConst, driver).isDisplayed();// проверка на наличие поля
+        addresseeButton.sendKeys(getProperies("emailLogin")); // ввод почты куда отправить
+        themeMail.click();
+        themeMail.sendKeys(getProperies("simbirsoftTheme")); // ввод темы письма
+        textMessageButton.click();
+        textMessageButton.sendKeys("Найдено " + quantityShipment + " писем\\ьма"); // текст письма. переменная - число входящих писем с темой "Simbirsoft theme"
     }
 
     /**
@@ -99,10 +95,9 @@ public class YandexMailPage extends PageFactory {
      *
      * @throws Exception
      */
-    public void backToMail() throws Exception {
-        if (waiting.newMail(backToMailButtonConst, driver).isDisplayed()) {
-            backToMailButton.click();
-        }
+    public void buttonClickToBackToMail() throws Exception {
+        newMail(backToMailButtonConst, driver).isDisplayed();
+        backToMailButton.click();
     }
 
     /**
@@ -122,9 +117,7 @@ public class YandexMailPage extends PageFactory {
      */
     public Integer getNumberEmailsAfter() throws Exception {
         String xPathNewMail = "//*[text() = \"Найдено " + quantityShipment + " писем\\ьма\"]"; // составляет xPath
-        if (waiting.newMail(xPathNewMail, driver).isDisplayed()) { // проверяет наличие нового письма
-            return quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считает общее число писем
-        }
-        return null;
+        newMail(xPathNewMail, driver).isDisplayed();// проверяет наличие нового письма
+        return quantityShipment = driver.findElements(By.xpath(mailsLocator)).size(); // считает общее число писем
     }
 }

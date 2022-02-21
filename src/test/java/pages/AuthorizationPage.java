@@ -1,5 +1,6 @@
 package pages;
 
+import jdk.internal.dynalink.beans.StaticClass;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,13 +9,14 @@ import org.openqa.selenium.support.PageFactory;
 import propertiesConstants.PropertiesReader;
 import waits.Waiting;
 
+import static propertiesConstants.PropertiesReader.getProperies;
+import static waits.Waiting.newMail;
+
 /**
  * Пэйджа для авторизации в почте
  */
 public class AuthorizationPage extends PageFactory {
     private WebDriver driver;
-    PropertiesReader propertiesReader = new PropertiesReader();
-    Waiting waiting = new Waiting();
     String passwordLocator = "//*[@id=\"passp-field-passwd\"]";
     @FindBy(xpath = "//a[contains(@class,\"Enter with-shadow\")]")
     private WebElement buttonLogs;
@@ -38,12 +40,12 @@ public class AuthorizationPage extends PageFactory {
      */
     public void authorization() throws Exception {
         buttonLogs.click();
-        inputLogin.sendKeys(propertiesReader.getProperies("emailLogin"));
+        inputLogin.sendKeys(getProperies("emailLogin"));
         inputLogin.sendKeys(Keys.ENTER);
-        if (waiting.newMail(passwordLocator, driver).isDisplayed()) {
-            inputPassword.sendKeys(propertiesReader.getProperies("emailPassword"));
-            inputPassword.sendKeys(Keys.ENTER);
-        }
+        newMail(passwordLocator, driver).isDisplayed();
+        inputPassword.sendKeys(getProperies("emailPassword"));
+        inputPassword.sendKeys(Keys.ENTER);
+
     }
 }
 
