@@ -57,7 +57,6 @@ public class EmailTest {
         yandexMailPage.reloadPage();
         int numbersAfter = yandexMailPage.getNumberEmailsAfter();
         int differenceNumberEmails = numbersAfter - numbersBefore;
-        System.out.println(differenceNumberEmails);
         Assert.assertEquals(differenceNumberEmails, 1, "Входящие не увеличились. Раздница между до отправки/после не равна 1");
     }
 
